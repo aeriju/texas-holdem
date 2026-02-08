@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// MonteCarlo estimates win probability for the given hole cards and community.
+// The probability accounts for ties by splitting the pot evenly.
 func MonteCarlo(hole []Card, community []Card, players int, sims int) (float64, error) {
 	if len(hole) != 2 {
 		return 0, errors.New("hole must have 2 cards")
@@ -20,6 +22,7 @@ func MonteCarlo(hole []Card, community []Card, players int, sims int) (float64, 
 		return 0, errors.New("simulations must be > 0")
 	}
 
+	// build a deck with all known cards removed.
 	known := append([]Card{}, hole...)
 	known = append(known, community...)
 	deck, err := RemoveCards(NewDeck(), known)
@@ -31,15 +34,18 @@ func MonteCarlo(hole []Card, community []Card, players int, sims int) (float64, 
 	wins := 0.0
 
 	for i := 0; i < sims; i++ {
+		// shuffle a fresh copy of the remaining deck for this trial
 		simDeck := append([]Card{}, deck...)
 		rng.Shuffle(len(simDeck), func(i, j int) { simDeck[i], simDeck[j] = simDeck[j], simDeck[i] })
 		idx := 0
 
+		// complete the community board
 		neededCommunity := 5 - len(community)
 		board := append([]Card{}, community...)
 		board = append(board, simDeck[idx:idx+neededCommunity]...)
 		idx += neededCommunity
 
+		// evaluate hero hand against the completed board
 		hero7 := append([]Card{}, hole...)
 		hero7 = append(hero7, board...)
 		heroRank, err := Evaluate7(hero7)
@@ -47,9 +53,11 @@ func MonteCarlo(hole []Card, community []Card, players int, sims int) (float64, 
 			return 0, err
 		}
 
+		// track best opponent hand and how many players share it (for ties)
 		bestOpp := heroRank
 		winners := 1
 
+		// deal random hole cards to the remaining players and evaluate them
 		for p := 0; p < players-1; p++ {
 			oppHole := []Card{simDeck[idx], simDeck[idx+1]}
 			idx += 2
@@ -68,10 +76,12 @@ func MonteCarlo(hole []Card, community []Card, players int, sims int) (float64, 
 			}
 		}
 
+		// if hero ties for best hand, count fractional win
 		if Compare(heroRank, bestOpp) == 0 {
 			wins += 1.0 / float64(winners)
 		}
 	}
 
+	// return average win probability across all simulations
 	return wins / float64(sims), nil
 }

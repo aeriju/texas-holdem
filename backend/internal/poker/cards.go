@@ -50,6 +50,7 @@ var valueToRank = map[int]byte{
 	14: 'A',
 }
 
+// validates and parses a 2-character card code like "HA" or "S7".
 func ParseCard(s string) (Card, error) {
 	s = strings.TrimSpace(strings.ToUpper(s))
 	if len(s) != 2 {
@@ -66,6 +67,7 @@ func ParseCard(s string) (Card, error) {
 	return Card{Suit: suit, Rank: rank}, nil
 }
 
+// parses a slice of card codes and rejects duplicates.
 func ParseCards(list []string) ([]Card, error) {
 	cards := make([]Card, 0, len(list))
 	seen := map[string]struct{}{}
@@ -84,14 +86,17 @@ func ParseCards(list []string) ([]Card, error) {
 	return cards, nil
 }
 
+// returns the compact 2-character card code.
 func (c Card) String() string {
 	return fmt.Sprintf("%c%c", c.Suit, c.Rank)
 }
 
+// maps rank rune to numeric value (2..14).
 func (c Card) RankValue() int {
 	return rankToValue[c.Rank]
 }
 
+// maps numeric value (2..14) to rank rune.
 func RankToChar(v int) (byte, error) {
 	r, ok := valueToRank[v]
 	if !ok {
@@ -100,6 +105,7 @@ func RankToChar(v int) (byte, error) {
 	return r, nil
 }
 
+// creates a standard 52-card deck in a deterministic order.
 func NewDeck() []Card {
 	suits := []byte{SuitClubs, SuitDiamonds, SuitHearts, SuitSpades}
 	ranks := []byte{'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'}
@@ -112,6 +118,7 @@ func NewDeck() []Card {
 	return deck
 }
 
+// returns a deck with the specified cards removed.
 func RemoveCards(deck []Card, remove []Card) ([]Card, error) {
 	toRemove := map[string]struct{}{}
 	for _, c := range remove {

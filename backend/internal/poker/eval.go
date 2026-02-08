@@ -41,6 +41,7 @@ func (h HandRank) Name() string {
 	return categoryName[h.Category]
 }
 
+// computes the best 5-card hand from exactly 7 cards.
 func Evaluate7(cs []Card) (HandRank, error) {
 	if len(cs) != 7 {
 		return HandRank{}, errors.New("Evaluate7 expects 7 cards")
@@ -56,6 +57,7 @@ func Evaluate7(cs []Card) (HandRank, error) {
 	return best, nil
 }
 
+// ranks a 5-card hand and returns its category and tiebreakers.
 func Evaluate5(cs []Card) HandRank {
 	ranks := make([]int, 0, 5)
 	suits := make(map[byte]int)
@@ -150,6 +152,7 @@ func Evaluate5(cs []Card) HandRank {
 	}
 }
 
+// compares two ranked hands: 1 if a > b, -1 if a < b, 0 if equal.
 func Compare(a, b HandRank) int {
 	if a.Category != b.Category {
 		if a.Category > b.Category {
@@ -172,6 +175,7 @@ func Compare(a, b HandRank) int {
 	return 0
 }
 
+// determines if the ranks form a straight and returns its high card.
 func straightHigh(ranks []int) (bool, int) {
 	unique := make([]int, 0, 5)
 	seen := map[int]struct{}{}
@@ -194,6 +198,7 @@ func straightHigh(ranks []int) (bool, int) {
 	return false, 0
 }
 
+// returns the quad rank and kicker rank if present.
 func fourOfAKind(counts map[int]int) (int, int, bool) {
 	quad := 0
 	kicker := 0
@@ -210,6 +215,7 @@ func fourOfAKind(counts map[int]int) (int, int, bool) {
 	return quad, kicker, true
 }
 
+// returns trip and pair ranks if present.
 func fullHouse(counts map[int]int) (int, int, bool) {
 	trip := 0
 	pair := 0
@@ -234,6 +240,7 @@ func fullHouse(counts map[int]int) (int, int, bool) {
 	return trip, pair, true
 }
 
+// returns trip rank and kickers if present.
 func threeOfAKind(counts map[int]int) (int, []int, bool) {
 	trip := 0
 	for r, c := range counts {
@@ -254,6 +261,7 @@ func threeOfAKind(counts map[int]int) (int, []int, bool) {
 	return trip, kickers, true
 }
 
+// returns high pair, low pair, and kicker if present.
 func twoPair(counts map[int]int) (int, int, int, bool) {
 	pairs := make([]int, 0, 2)
 	kicker := 0
@@ -271,6 +279,7 @@ func twoPair(counts map[int]int) (int, int, int, bool) {
 	return pairs[0], pairs[1], kicker, true
 }
 
+// returns pair rank and kickers if present.
 func onePair(counts map[int]int) (int, []int, bool) {
 	pair := 0
 	for r, c := range counts {
@@ -291,6 +300,7 @@ func onePair(counts map[int]int) (int, []int, bool) {
 	return pair, kickers, true
 }
 
+// enumerates all 21 combinations of 5 cards from 7.
 func combinations7to5(cs []Card) [][]Card {
 	combos := make([][]Card, 0, 21)
 	for i := 0; i < 7; i++ {
