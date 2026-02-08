@@ -4,28 +4,23 @@ A Texas Hold'em evaluator and odds calculator built with **Go** backend and **Fl
 Designed for containerization and deployment on **Google Kubernetes Engine (GKE)** with AMD64 nodes, for the course 'Distributed Systems'.
 
 
-## Architecture
 
-```
-┌─────────────────┐     HTTP/JSON      ┌──────────────────────┐
-│  Flutter Web    │ ─────────────────► │     Go Backend       │
-│  (Frontend)     │  /api/v1/* (REST)  │     :8080 (REST)     │
-└─────────────────┘                    └──────────────────────┘
-```
+## Tech Stack
 
-- **Backend**: Go REST API on port 8080
-- **Frontend**: Flutter web app calling the REST API
-- **API Modes**:
-  - Best hand from 7 cards
-  - Heads-up comparison
-  - Monte Carlo odds
+| Layer     | Technology                    |
+|----------|-------------------------------|
+| Frontend | Flutter / Dart                |
+| Backend  | Go (REST API)                 |
+| Runtime  | Docker, GKE (AMD64)           |
 
-## Prerequisites
+## Card Format
 
-- **Go** 1.22+
-- **Flutter** (for web)
-- **Docker** (for images)
-- **kubectl** + **gcloud** (for GKE)
+Cards are 2-character strings:
+- **First char**: Suit – `H` (Hearts), `D` (Diamonds), `C` (Clubs), `S` (Spades)
+- **Second char**: Rank – `A` (Ace), `K` (King), `Q` (Queen), `J` (Jack), `T` (Ten), `9`–`2`
+
+Examples: `HA` (Heart Ace), `S7` (Spade 7), `CT` (Club Ten)
+
 
 ## Project Structure
 
@@ -44,7 +39,10 @@ Designed for containerization and deployment on **Google Kubernetes Engine (GKE)
 └── README.md
 ```
 
-## Local Development
+
+## Quick Start
+
+### Local Development
 
 ### Backend
 
@@ -68,7 +66,7 @@ flutter run
 
 Set the API base URL in the UI to `http://localhost:8080`.
 
-## Makefile Commands
+### Makefile Commands
 
 ```bash
 make backend       # build Go backend
@@ -78,3 +76,16 @@ make docker-build  # build amd64 Docker images
 make test          # run Go tests
 make clean         # remove build artifacts
 ```
+
+### API Endpoints
+| Method | Endpoint            | Description                                           |
+|--------|---------------------|-------------------------------------------------------|
+| POST   | `/api/v1/best-hand` | Best hand from 2 hole + 5 community cards             |
+| POST   | `/api/v1/heads-up`  | Compare two hands, return winner                      |
+| POST   | `/api/v1/odds`      | Win probability via Monte Carlo simulation            |
+
+
+## References
+- [Texas Hold'em (Wikipedia)](https://en.wikipedia.org/wiki/Texas_hold_%27em)
+- [Poker Hand Rankings](https://en.wikipedia.org/wiki/List_of_poker_hands)
+
