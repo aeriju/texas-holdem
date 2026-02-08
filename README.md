@@ -31,9 +31,10 @@ Examples: `HA` (Heart Ace), `S7` (Spade 7), `CT` (Club Ten)
 ├── backend/
 │   ├── cmd/api/              # Go REST server
 │   └── internal/
-│        ├── api/          # HTTP handlers
-│        └─  poker/        # Hand evaluation + Monte Carlo
-│
+│       ├── api/               # HTTP handlers
+│       └── poker/             # Hand evaluation + Monte Carlo
+├── docs/
+│   └── PROJECT_GUIDE.md       # Docker + GKE deployment steps
 ├── frontend/
 │   ├── lib/
 │   │    ├── main.dart          # App entry + theme
@@ -42,6 +43,11 @@ Examples: `HA` (Heart Ace), `S7` (Spade 7), `CT` (Club Ten)
 │   │    ├── services/          # REST client
 │   │    └── widgets/           # Reusable UI widgets
 │   └── pubspec.yaml
+├── k8s/
+│   ├── backend-deployment.yaml
+│   ├── frontend-deployment.yaml
+│   ├── ingress.yaml
+│   └── namespace.yaml
 ├── Makefile
 └── README.md
 ```
@@ -71,12 +77,15 @@ flutter pub get
 flutter run
 ```
 
-Set the API base URL in the UI to `http://localhost:8080`.
-If you need to override it at build/run time:
+Backend URL is injected at build/run time:
 
 ```bash
 flutter run --dart-define=REST_BACKEND_URL=http://localhost:8080
 ```
+
+## Deployment
+
+See `docs/PROJECT_GUIDE.md`.
 
 ### Makefile Commands
 
@@ -85,6 +94,7 @@ make backend       # build Go backend
 make backend-run   # run backend binary
 make frontend      # build Flutter web app
 make docker-build  # build amd64 Docker images
+make loadtest      # run k6 load tests
 make test          # run Go tests
 make clean         # remove build artifacts
 ```

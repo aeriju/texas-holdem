@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: holdem-frontend
+  namespace: holdem
+  labels:
+    app: holdem-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: holdem-frontend
+  template:
+    metadata:
+      labels:
+        app: holdem-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: gcr.io/PROJECT_ID/holdem-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "25m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: holdem-frontend
+  namespace: holdem
+spec:
+  selector:
+    app: holdem-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP

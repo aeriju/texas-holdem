@@ -1,5 +1,5 @@
 # Texas Hold'em - Build and deployment automation
-.PHONY: backend frontend docker-build test clean
+.PHONY: backend frontend docker-build docker-backend docker-frontend test loadtest clean
 
 # Default target
 all: backend frontend
@@ -26,9 +26,25 @@ docker-build:
 	docker build --platform linux/amd64 -t holdem-frontend:latest -f frontend/Dockerfile frontend
 	@echo "Docker images built."
 
+docker-backend:
+	@echo "Building backend Docker image for linux/amd64..."
+	docker build --platform linux/amd64 -t holdem-backend:latest -f backend/Dockerfile .
+	@echo "Backend Docker image built."
+
+docker-frontend:
+	@echo "Building frontend Docker image for linux/amd64..."
+	docker build --platform linux/amd64 -t holdem-frontend:latest -f frontend/Dockerfile frontend
+	@echo "Frontend Docker image built."
+
 # --- Tests ---
 test:
 	go test -v ./backend/...
+
+# --- Load testing ---
+loadtest:
+	@echo "Running load tests..."
+	cd loadtest && k6 run loadtest.js
+	@echo "Load test complete."
 
 # --- Clean ---
 clean:
