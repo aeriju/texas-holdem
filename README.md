@@ -30,10 +30,17 @@ Examples: `HA` (Heart Ace), `S7` (Spade 7), `CT` (Club Ten)
 │   └── test_cases/           # CSV test cases for comparisons
 ├── backend/
 │   ├── cmd/api/              # Go REST server
-│   ├── internal/poker/        # Hand evaluation + Monte Carlo
-│   └── internal/api/          # HTTP handlers
+│   └── internal/
+│        ├── api/          # HTTP handlers
+│        └─  poker/        # Hand evaluation + Monte Carlo
+│
 ├── frontend/
-│   ├── lib/main.dart          # Flutter web UI
+│   ├── lib/
+│   │    ├── main.dart          # App entry + theme
+│   │    ├── models/            # Shared enums/types
+│   │    ├── screens/           # UI screens
+│   │    ├── services/          # REST client
+│   │    └── widgets/           # Reusable UI widgets
 │   └── pubspec.yaml
 ├── Makefile
 └── README.md
@@ -65,6 +72,11 @@ flutter run
 ```
 
 Set the API base URL in the UI to `http://localhost:8080`.
+If you need to override it at build/run time:
+
+```bash
+flutter run --dart-define=REST_BACKEND_URL=http://localhost:8080
+```
 
 ### Makefile Commands
 
@@ -88,4 +100,3 @@ make clean         # remove build artifacts
 ## References
 - [Texas Hold'em (Wikipedia)](https://en.wikipedia.org/wiki/Texas_hold_%27em)
 - [Poker Hand Rankings](https://en.wikipedia.org/wiki/List_of_poker_hands)
-

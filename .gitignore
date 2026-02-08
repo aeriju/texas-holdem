@@ -4,6 +4,8 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+**/*.iml
+**/.metadata
 
 # Go
 /backend/bin/
