@@ -9,7 +9,8 @@ RUN cd backend && go mod download 2>/dev/null || true
 
 COPY backend/ ./backend/
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /server ./backend/cmd/api
+WORKDIR /app/backend
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /server ./cmd/api
 
 # Runtime
 FROM --platform=linux/amd64 alpine:3.19

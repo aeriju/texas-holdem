@@ -38,7 +38,7 @@ docker-frontend:
 
 # --- Tests ---
 test:
-	go test -v ./backend/...
+	cd backend && go test -v ./...
 
 # --- Load testing ---
 loadtest:
