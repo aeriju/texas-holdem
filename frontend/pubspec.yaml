@@ -1,0 +1,17 @@
+name: texas_holdem_frontend
+description: Texas Hold'em companion frontend
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
+  google_fonts: ^6.2.1
+
+flutter:
+  uses-material-design: true
