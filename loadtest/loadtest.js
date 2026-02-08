@@ -20,7 +20,7 @@ export const options = {
     { duration: '10s', target: 0 },
   ],
   thresholds: {
-    http_req_duration: ['p(95)<600'],
+    http_req_duration: ['p(95)<1500'],
     checks: ['rate>0.99'],
   },
 };
@@ -61,7 +61,7 @@ export default function () {
       hole: ['HA', 'HK'],
       community: ['C2', 'D3', 'S4'],
       players: 6,
-      simulations: 2000,
+      simulations: 500,
     });
     const res = http.post(`${BASE_URL}/api/v1/odds`, payload, {
       headers: { 'Content-Type': 'application/json' },

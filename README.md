@@ -27,14 +27,14 @@ Examples: `HA` (Heart Ace), `S7` (Spade 7), `CT` (Club Ten)
 ```
 .
 ├── assets/
-│   └── test_cases/           # CSV test cases for comparisons
+│   └── test_cases/             # CSV test cases for comparisons
 ├── backend/
-│   ├── cmd/api/              # Go REST server
+│   ├── cmd/api/                # Go REST server
 │   └── internal/
-│       ├── api/               # HTTP handlers
-│       └── poker/             # Hand evaluation + Monte Carlo
+│       ├── api/                # HTTP handlers
+│       └── poker/              # Hand evaluation + Monte Carlo
 ├── docs/
-│   └── PROJECT_GUIDE.md       # Docker + GKE deployment steps
+│   └── PROJECT_GUIDE.md        # Docker + GKE deployment steps
 ├── frontend/
 │   ├── lib/
 │   │    ├── main.dart          # App entry + theme
@@ -83,7 +83,7 @@ Backend URL is injected at build/run time:
 flutter run --dart-define=REST_BACKEND_URL=http://localhost:8080
 ```
 
-## Deployment
+### Deployment
 
 See `docs/PROJECT_GUIDE.md`.
 
@@ -93,7 +93,7 @@ See `docs/PROJECT_GUIDE.md`.
 make backend       # build Go backend
 make backend-run   # run backend binary
 make frontend      # build Flutter web app
-make docker-build  # build amd64 Docker images
+make docker-build  # build amd64 Docker images of both backend and frontend
 make loadtest      # run k6 load tests
 make test          # run Go tests
 make clean         # remove build artifacts
