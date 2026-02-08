@@ -7,7 +7,7 @@ Designed for containerization and deployment on **Google Kubernetes Engine (GKE)
 
 ## Tech Stack
 
-| Layer     | Technology                    |
+| Layer     | Technology                   |
 |----------|-------------------------------|
 | Frontend | Flutter / Dart                |
 | Backend  | Go (REST API)                 |
